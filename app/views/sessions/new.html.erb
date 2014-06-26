@@ -1,0 +1,36 @@
+<h1>Sign in</h1>
+
+<%= form_tag session_path, method: 'post' do %>
+	<p>
+		<label>
+			Email:
+			<br>
+			<%= text_field_tag :email %>
+		</label>
+	</p>
+	<p>
+		<label>
+			Password:
+			<br>
+			<%= password_field_tag :password %>
+		</label>
+	</p>
+	<p><%= submit_tag 'Sign In' %></p>
+<% end %>
+
+<p>
+	Don't have an account?
+	<%= link_to 'Sign up', new_user_path %>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
