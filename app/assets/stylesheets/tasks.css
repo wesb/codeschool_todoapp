@@ -1,0 +1,11 @@
+.panel {
+  margin-top: 50px;
+}
+
+.list-group {
+  margin-top: 20px;
+}
+
+.list-group-item .text-muted {
+  text-decoration: line-through;
+}
