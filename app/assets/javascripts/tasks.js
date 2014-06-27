@@ -11,14 +11,14 @@ app.config([
   }
 ]);
 
-app.factory('Task', function($resource) {
+app.factory('Task', ['$resource', function($resource) {
   var task = $resource('/tasks/:id', { id: '@id' }, {
     update: { method: 'PATCH' }
   });
   return task;
-});
+}]);
 
-app.controller('TasksCtrl', function($scope, Task) {
+app.controller('TasksCtrl', ['$scope', 'Task', function($scope, Task) {
   $scope.tasks = Task.query();
   $scope.task = new Task();
 
@@ -40,7 +40,7 @@ app.controller('TasksCtrl', function($scope, Task) {
       $scope.tasks.splice(index, 1);
     });
   }
-});
+}]);
 
 app.directive('taskProgress', function() {
   return {
