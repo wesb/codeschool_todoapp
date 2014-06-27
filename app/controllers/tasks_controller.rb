@@ -1,44 +1,66 @@
 class TasksController < ApplicationController
+  before_action :ensure_current_user
+
+  respond_to :html, :json
+
   def index
     @tasks = current_user.tasks
+    respond_with @tasks
+  end
+
+  def show
+    @task = current_user.tasks.find(params[:id])
+    respond_with @task
+  end
+
+  def new
+    @task = current_user.tasks.new
+  end
+
+  def edit
+    @task = current_user.tasks.find(params[:id])
   end
 
   def create
-    @task = User.first.tasks.build(safe_params)
-    unless @task.save
-      render json: @task.errors.full_messages, status: :not_acceptable
-    else
-      render :show
-    end
+    @task = current_user.tasks.new(task_params)
+    @task.save
+    respond_with @task, location: tasks_url
   end
 
   def update
-    @task = Task.find(params[:id])
-    unless @task.update_attributes(safe_params)
-      render json: @task.errors.full_messages, status: :not_acceptable
-    else
-      render :show
-    end
+    @task = current_user.tasks.find(params[:id])
+    @task.update_attributes(task_params)
+    respond_with @task, location: tasks_url
   end
 
   def destroy
-    @task = Task.find(params[:id])
-    unless @task.destroy
-      render json: @task.errors.full_messages, status: :not_acceptable
-    else
-      render :show
-    end
+    @task = current_user.tasks.find(params[:id])
+    @task.destroy
+    respond_with @task
   end
-
 
   private
 
-  def safe_params
-    safe_attributes = [
-      :user_id,
-      :title,
-      :completed,
-    ]
-    params.require(:task).permit(*safe_attributes)
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def task_params
+      params.require(:task).permit(:title)
+    end
+
+    def ensure_current_user
+      unless logged_in?
+        flash[:notice] = "You must sign in first."
+        redirect_to new_session_url
+      end
+    end
 end
+
+
+
+
+
+
+
+
+
+
+

@@ -23,40 +23,9 @@ app.controller('TasksCtrl', function($scope, Task) {
   $scope.task = new Task();
 
   $scope.addTask = function(task) {
-    if (task.title && task.title.length > 0) {
-      task.$save(function(r) {
-        $scope.tasks.push(task);
-        $scope.task = new Task();
-      });
-    }
-  }
-
-  $scope.updateTask = function(task) {
-    task.$update();
-  }
-
-  $scope.deleteTask = function(task, index) {
-    task.$delete(function() {
-      $scope.tasks.splice(index, 1);
+    task.$save(function() {
+      $scope.tasks.push(task);
+      $scope.task = new Task();
     });
-  }
-});
-
-app.directive('taskProgress', function() {
-  return {
-    templateUrl: 'task-progress.html',
-    link: function($scope) {
-      $scope.$watch('tasks', function(newValue, oldValue) {
-        updateProgress();
-      }, true);
-      function updateProgress() {
-        var completed = 0;
-        angular.forEach($scope.tasks, function(task) {
-          if (task.completed)
-            completed += 1;
-        });
-        $scope.completed = completed;
-      }
-    }
   }
 });
