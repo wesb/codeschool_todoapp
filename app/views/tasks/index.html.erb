@@ -1,27 +1,59 @@
-<h1>Listing tasks</h1>
+<div ng-controller='TasksCtrl'>
+  <div class='col-md-4 col-md-offset-4'>
+    <div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h3 class='panel-title'>
+          <div class='row'>
+            <div class='col-md-6'>Tasks</div>
+            <div class='col-md-6'><span task-progress></span></div>
+          </div>
+          <!-- <span class='text-muted pull-right'><%= @tasks.completed.count %> of <%= @tasks.count %> complete</span> -->
+        </h3>
+      </div>
+      <div class='panel-body'>
+        <div class='row'>
+          <form ng-submit='addTask(task)'>
+            <div class='col-md-10'>
+              <input type='text' ng-model='task.title' placeholder='Add a new task..' class='form-control'>
+            </div>
+            <div class='col-md-2'>
+              <button type='submit' class='btn btn-primary'>add</button>
+            </div>
+          </form>
+        </div>
+        <div class='row'>
+          <div class='col-md-12'>
+            <ul class='list-group'>
+              <li class='list-group-item' ng-repeat='task in tasks | orderBy:"completed":false'>
+                <div class='row'>
+                  <div class='col-md-1'>
+                    <input type='checkbox' ng-model='task.completed' ng-change='updateTask(task)' />
+                  </div>
+                  <div class='col-md-8'>
+                    <span ng-class='task.completed && "text-muted"' ng-hide='task.editing' ng-click='task.editing = true'>{{task.title}}</span>
+                    <div class='input-group' ng-show='task.editing'>
+                      <input type='text' class='form-control' ng-model='task.title'>
+                      <span class='input-group-btn'>
+                        <button class='btn btn-default' type='button' ng-click='updateTask(task); task.editing = false'>Done</button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class='col-md-3'>
+                    <a ng-click='deleteTask(task, $index)' class='text-danger'>Remove</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tasks.each do |task| %>
-      <tr>
-        <td><%= task.title %></td>
-        <td><%= task.user.name %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Task', new_task_path %>
+<script type='text/ng-template' id='task-progress.html'>
+  <!-- <span class='text-muted pull-right'>{{completed}} of {{tasks.length}}</span> -->
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" style="width: {{(completed/tasks.length) * 100}}%"></div>
+  </div>
+</script>
