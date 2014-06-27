@@ -5,9 +5,11 @@
         <h3 class='panel-title'>
           <div class='row'>
             <div class='col-md-6'>Tasks</div>
-            <div class='col-md-6'><span task-progress></span></div>
+            <div class='col-md-6'>
+              <span task-progress></span>
+              <!-- <span class='text-muted pull-right'><%= number_to_percentage(current_user.tasks_completed_percent, precision: 1) %> complete</span> -->
+            </div>
           </div>
-          <!-- <span class='text-muted pull-right'><%= @tasks.completed.count %> of <%= @tasks.count %> complete</span> -->
         </h3>
       </div>
       <div class='panel-body'>
@@ -52,7 +54,6 @@
 </div>
 
 <script type='text/ng-template' id='task-progress.html'>
-  <!-- <span class='text-muted pull-right'>{{completed}} of {{tasks.length}}</span> -->
   <div class="progress">
     <div class="progress-bar progress-bar-success" style="width: {{(completed/tasks.length) * 100}}%"></div>
   </div>
