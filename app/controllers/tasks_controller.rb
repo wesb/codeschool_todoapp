@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  before_filter :ensure_current_user
+
   def index
     @tasks = current_user.tasks
   end
@@ -35,10 +37,16 @@ class TasksController < ApplicationController
 
   def safe_params
     safe_attributes = [
-      :user_id,
       :title,
       :completed,
     ]
     params.require(:task).permit(*safe_attributes)
+  end
+
+  def ensure_current_user
+   unless logged_in?
+     flash[:notice] = "You must sign in first."
+     redirect_to new_session_url
+   end
   end
 end
